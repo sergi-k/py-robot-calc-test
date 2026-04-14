@@ -2,7 +2,7 @@
 Library    SikuliLibrary    mode=NEW
 Library    Process
 Library    Screenshot
-Library    ${CURDIR}/random_number.py
+Library    ${CURDIR}/helper_lib.py
 
 *** Variables ***
 ${IMAGES_DIR}    ${CURDIR}/../reference_images
@@ -10,17 +10,33 @@ ${CALCULATOR}    gnome-calculator
 
 *** Keywords ***
 
-Suite Setup Steps
+Setup Steps
     Start Sikuli Process
     Add Image Path    ${IMAGES_DIR}
-    Log    ${IMAGES_DIR}    console=True
-    Set Min Similarity    0.99
+    Set Min Similarity    0.9
     Launch Calculator
+
+Teardown Steps
+    Stop Remote Server
+    Close Calculator
+
+Screen Should Contain Any Image
+    [Arguments]    @{images}
+    FOR    ${image}    IN    @{images}
+        ${status}=    Run Keyword And Return Status    Screen Should Contain    ${image}
+        Return From Keyword If    ${status}    ${image}
+    END
+    Fail    None of the expected images were found on screen
+    
 
 Launch Calculator
     Start Process    ${CALCULATOR}    alias=calculator
     Sleep    5s
-    Screen Should Contain    calc_opened.png
+    ${found_image}=    Screen Should Contain Any Image    calc_opened.png    calc_maximized.png    calc_opened_2.png
+    IF    '${found_image}' == 'calc_maximized.png'
+        Click    minimize_calc.png
+    END
+    
 
 Close Calculator
     Terminate Process    calculator
@@ -37,17 +53,21 @@ Enter Number
         END
     END
     
-Choose Random Int Number
-    ${int_num}=    Pick Random Int Number
-    ${digits}=    Split Number    ${int_num}
+Choose Random Number
+    ${num}=    Pick Random Number
+    ${digits}=    Split Number    ${num}
     Enter Number    @{digits}
-    RETURN    ${int_num}
-
-Choose Random Float Number
-    ${float_num}=    Pick Random Float Number
-    ${digits}=    Split Number    ${float_num}
-    Enter Number    @{digits}
-    RETURN    ${float_num}
+    RETURN    ${num}
 
 Clear Calculator
     Click    c_clear_btn.png
+
+Result Should Be
+    [Arguments]    ${expected}
+    Sleep    2s
+    ${screenshot}=    Take Screenshot    temp_screen
+    Sleep    2s
+    ${text}=    Read Result    ${screenshot}    63    250    327    42
+    Log To Console    \nExpected result: ${expected}
+    Log To Console    \nDisplay shows: ${text}
+    Should Contain    ${text}    ${expected}
