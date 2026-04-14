@@ -55,5 +55,11 @@ def square_inside_python(num):
     return _normalize_number(str(result))
 
 def root_inside_python(num):
+    if num < 0:
+        result = (num + 0j) ** 0.5
+        result_str = str(result.imag)
+        imaginary_rounded = round(float(result_str), 9)
+        imaginary_str = str(imaginary_rounded).rstrip('0').rstrip('.')
+        return imaginary_str
     result=num**0.5
     return str(round(result, 9))

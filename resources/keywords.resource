@@ -33,8 +33,8 @@ Launch Calculator
     Start Process    ${CALCULATOR}    alias=calculator
     Sleep    5s
     ${found_image}=    Screen Should Contain Any Image    calc_opened.png    calc_maximized.png    calc_opened_2.png
-    IF    '${found_image}' == 'calc_maximized.png'
-        Click    minimize_calc.png
+    IF    '${found_image}' != 'calc_maximized.png'
+        Click    maximize.png
     END
     
 
@@ -67,7 +67,7 @@ Result Should Be
     Sleep    2s
     ${screenshot}=    Take Screenshot    temp_screen
     Sleep    2s
-    ${text}=    Read Result    ${screenshot}    63    250    327    42
+    ${text}=    Read Result    ${screenshot}    648    844    620    25
     Log To Console    \nExpected result: ${expected}
     Log To Console    \nDisplay shows: ${text}
     Should Contain    ${text}    ${expected}

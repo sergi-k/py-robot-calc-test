@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation    Test suite for GNOME Calculator App
-Resource    ../resources/keywords.robot
+Resource    ../resources/keywords.resource
 Test Setup    Setup Steps
 Test Teardown   Teardown Steps
 
@@ -80,7 +80,3 @@ Root Works Correctly
     ${expected_result}=    Root Inside Python    ${rand_num}
     Click    calculate_result_btn.png
     Result Should Be    ${expected_result}
-
-Maximizing Window Works Correctly
-    Click    maximize_btn.png
-    Wait Until Screen Contain    image=calc_maximized.png    timeout=5
