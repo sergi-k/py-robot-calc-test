@@ -34,7 +34,7 @@ Launch Calculator
     Sleep    5s
     ${found_image}=    Screen Should Contain Any Image    calc_opened.png    calc_maximized.png    calc_opened_2.png
     IF    '${found_image}' != 'calc_maximized.png'
-        Click    maximize.png
+        Click    maximize_btn.png
     END
     
 
