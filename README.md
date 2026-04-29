@@ -6,5 +6,4 @@ Framework: Robot Framework
 
 Libraries: SikuliLibrary for image recognition, pytesseract for OCR image processing
 
-[![Test Run](https://youtu.be/xGE10iv8rfo)](https://youtu.be/xGE10iv8rfo)
-
+[![Test Run](https://youtube.com)](https://www.youtube.com/watch?v=xGE10iv8rfo)
